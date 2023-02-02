@@ -28,7 +28,7 @@ namespace Chess_Client
 
         public Type type;
         Texture2D pieceTexture;
-        Rectangle pieceRect = new Rectangle(60, 60, 0, 0);
+        Rectangle pieceRect = new Rectangle(0, 0, 60, 60);
 
         List<Player1> player1 = new List<Player1>();
         Vector2[,] board = new Vector2[8, 8]{ //board co-ords
@@ -103,7 +103,7 @@ namespace Chess_Client
             //load pieces in their correct place
             for (int i = 0; i < 8; i++)
             {
-                player1.Add(new Player1(board[7, i], Type.Pawn));
+                player1.Add(new Player1(board[6, i], Type.Pawn));
             }
         }
 
