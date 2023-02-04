@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,8 +15,9 @@ namespace Chess_Client
 {
     internal class Player1
     {
-        //piece variables
         Vector2 position;
+
+        //enum
         public enum Type
         {
             Pawn,
@@ -27,70 +30,66 @@ namespace Chess_Client
         }
 
         public Type type;
-        Texture2D pieceTexture;
-        Rectangle pieceRect = new Rectangle(0, 0, 60, 60);
+        
+        //rectangles
+        Rectangle pieceRect = new Rectangle(0, 0, 90, 90);
+        Rectangle mousePos = new Rectangle(0, 0, 10, 10);
 
         List<Player1> player1 = new List<Player1>();
         Vector2[,] board = new Vector2[8, 8]{ //board co-ords
-                                {new Vector2(20, 20), new Vector2(120, 20), new Vector2(220, 20), new Vector2(320, 20), new Vector2(420, 20), new Vector2(520, 20), new Vector2(620, 20), new Vector2(720, 20)},
-                                {new Vector2(20, 120), new Vector2(120, 120), new Vector2(220, 120), new Vector2(320, 120), new Vector2(420, 120), new Vector2(520, 120), new Vector2(620, 120), new Vector2(720, 120)},
-                                {new Vector2(20, 220), new Vector2(120, 220), new Vector2(220, 220), new Vector2(320, 220), new Vector2(420, 220), new Vector2(520, 220), new Vector2(620, 220), new Vector2(720, 220)},
-                                {new Vector2(20, 320), new Vector2(120, 320), new Vector2(220, 320), new Vector2(320, 320), new Vector2(420, 320), new Vector2(520, 320), new Vector2(620, 320), new Vector2(720, 320)},
-                                {new Vector2(20, 420), new Vector2(120, 420), new Vector2(220, 420), new Vector2(320, 420), new Vector2(420, 420), new Vector2(520, 420), new Vector2(620, 420), new Vector2(720, 420)},
-                                {new Vector2(20, 520), new Vector2(120, 550), new Vector2(220, 520), new Vector2(320, 520), new Vector2(420, 520), new Vector2(520, 520), new Vector2(620, 520), new Vector2(720, 520)},
-                                {new Vector2(20, 620), new Vector2(120, 620), new Vector2(220, 620), new Vector2(320, 620), new Vector2(420, 620), new Vector2(520, 620), new Vector2(620, 620), new Vector2(720, 620)},
-                                {new Vector2(20, 720), new Vector2(120, 720), new Vector2(220, 720), new Vector2(320, 720), new Vector2(420, 720), new Vector2(520, 720), new Vector2(620, 720), new Vector2(720, 720)},
+                                {new Vector2(5, 5), new Vector2(105, 5), new Vector2(205, 5), new Vector2(320, 5), new Vector2(420, 5), new Vector2(520, 5), new Vector2(620, 5), new Vector2(720, 5)},
+                                {new Vector2(5, 105), new Vector2(105, 105), new Vector2(205, 105), new Vector2(305, 105), new Vector2(405, 105), new Vector2(505, 105), new Vector2(605, 105), new Vector2(705, 105)},
+                                {new Vector2(5, 205), new Vector2(105, 205), new Vector2(205, 205), new Vector2(305, 205), new Vector2(405, 205), new Vector2(505, 205), new Vector2(605, 205), new Vector2(705, 205)},
+                                {new Vector2(5, 305), new Vector2(105, 305), new Vector2(205, 305), new Vector2(305, 305), new Vector2(405, 305), new Vector2(505, 305), new Vector2(605, 305), new Vector2(705, 305)},
+                                {new Vector2(5, 405), new Vector2(105, 405), new Vector2(205, 405), new Vector2(305, 405), new Vector2(405, 405), new Vector2(505, 405), new Vector2(605, 405), new Vector2(705, 405)},
+                                {new Vector2(5, 505), new Vector2(105, 505), new Vector2(205, 505), new Vector2(305, 505), new Vector2(405, 505), new Vector2(505, 505), new Vector2(605, 505), new Vector2(705, 505)},
+                                {new Vector2(5, 605), new Vector2(105, 605), new Vector2(205, 605), new Vector2(305, 605), new Vector2(405, 605), new Vector2(505, 605), new Vector2(605, 605), new Vector2(705, 605)},
+                                {new Vector2(5, 705), new Vector2(105, 705), new Vector2(205, 705), new Vector2(305, 705), new Vector2(405, 705), new Vector2(505, 705), new Vector2(605, 705), new Vector2(705, 705)},
                             };
 
-        //pieces
+        //Textures
         Texture2D W_Bishop;
         Texture2D W_King;
         Texture2D W_Rook;
         Texture2D W_Pawn;
         Texture2D W_Queen;
         Texture2D W_Knight;
-        
+        Texture2D _texture; //blank texture
+
+        //other variable
+        MouseState mState;
+        MouseState mStateOld;
+
+        int selectedPiece;
+        bool hasBeenMoved;
+        int piecePosX;
+        int piecePosY;
+
+        List<int> validMovesX = new List<int>();
+        List<int> validMovesY = new List<int>();
+
+        List<Color> rectColours = new List<Color>();
+        Color SemiTransparent = new Color(225, 232, 149, 255);
+
+
         public Player1()
         {
 
         }
-        public Player1(Vector2 startPosition, Type pieceType)
+        public Player1(int startPosY, int startPosX, Type pieceType)
         {
             Debug.WriteLine("Player1 Constructor Triggered");
-            position = startPosition;
+            piecePosX = startPosX;
+            piecePosY = startPosY;
+            position = board[startPosY, startPosX];
             pieceRect.X = (int)position.X;
             pieceRect.Y = (int)position.Y;
             type = pieceType;
-            Debug.WriteLine(pieceType + ", "+ type);
-
-            switch (type)
-            {
-                case Type.Bishop:
-                    pieceTexture = W_Bishop;
-                    break;
-                case Type.King:
-                    pieceTexture = W_King;
-                    break;
-                case Type.Rook:
-                    pieceTexture = W_Rook;
-                    break;
-                case Type.Pawn:
-                    pieceTexture = W_Pawn;
-                    Debug.WriteLine("Texture Set Correctly");
-                    break;
-                case Type.Queen:
-                    pieceTexture = W_Queen;
-                    break;
-                case Type.Knight:
-                    pieceTexture = W_Knight;
-                    break;
-                default:
-                    Debug.WriteLine("Error Initializing Texture");
-                    break;
-            }
+            hasBeenMoved = false;
+            Debug.WriteLine("Creating Type: "+pieceType);
         }
 
-        public void LoadContent(ContentManager Content)
+        public void LoadContent(ContentManager Content, GraphicsDevice _graphics)
         {
             //load pictures of pieces
             W_Bishop = Content.Load<Texture2D>("White/W_Bishop");
@@ -100,27 +99,119 @@ namespace Chess_Client
             W_Queen = Content.Load<Texture2D>("White/W_Queen");
             W_Knight = Content.Load<Texture2D>("White/W_Knight");
 
+            //blank texture 
+            _texture = new Texture2D(_graphics, 1, 1);
+            _texture.SetData(new Color[] { Color.White });
+
             //load pieces in their correct place
             for (int i = 0; i < 8; i++)
             {
-                player1.Add(new Player1(board[6, i], Type.Pawn));
+                player1.Add(new Player1(6, i, Type.Pawn));
+            }
+            for (int i = 0; i < 8; i += 7)
+            {
+                player1.Add(new Player1(7, i, Type.Rook));
+            }
+            for (int i = 1; i < 7; i += 5)
+            {
+                player1.Add(new Player1(7, i, Type.Knight));
+            }
+            for (int i = 2; i < 6; i += 3)
+            {
+                player1.Add(new Player1(7, i, Type.Bishop));
+            }
+            player1.Add(new Player1(7, 3, Type.Queen));
+            player1.Add(new Player1(7, 4, Type.King));
+            for (int i = 0; i < 16; i++)
+            {
+                rectColours.Add(Color.Black);
             }
         }
 
-        public void Update()
+        public void Update(bool debugMode)
         {
-            for (int i = 0; i < player1.Count; i++)
+            mState = Mouse.GetState();
+            mousePos.X = (int)mState.X;
+            mousePos.Y = (int)mState.Y;
+
+            for (int i = 0; i < player1.Count; i++) //update every pieces rect to their position
             {
                 player1[i].pieceRect.X = (int)player1[i].position.X;
                 player1[i].pieceRect.Y = (int)player1[i].position.Y;
             }
+            
+            if (mState.LeftButton == ButtonState.Pressed && mStateOld.LeftButton == ButtonState.Released)
+            {
+                for (int i = 0; i < player1.Count; i++)
+                {
+                    if (mousePos.Intersects(player1[i].pieceRect))
+                    {
+                        if (i != selectedPiece) //if a new piece is selected
+                        {
+                            validMovesX.Clear();
+                            validMovesY.Clear();
+                            rectColours[selectedPiece] = Color.Black;
+                            selectedPiece = i;
+                            rectColours[i] = SemiTransparent;
+                            CheckValidMoves(debugMode);
+                            if (debugMode)
+                            {
+                                for (int j = 0; j < validMovesX.Count; j++)
+                                {
+                                    Debug.WriteLine("Valid Moves:" + (validMovesX[j] + 1) + "," + (validMovesY[j] + 1));
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            mStateOld = mState;
         }
 
         public void Draw(SpriteBatch _spriteBatch)
         {
-            for (int i = 0; i < player1.Count; i++)
+            for (int i = 0; i < player1.Count; i++) //draw pieces by type
             {
-                _spriteBatch.Draw(W_Pawn, player1[i].pieceRect, Color.White);
+                if (rectColours[i] != Color.Black)
+                    _spriteBatch.Draw(_texture, player1[i].pieceRect, rectColours[i]);
+                if (player1[i].type == Type.Pawn)
+                    _spriteBatch.Draw(W_Pawn, player1[i].pieceRect, Color.White);
+                if (player1[i].type == Type.Rook)
+                    _spriteBatch.Draw(W_Rook, player1[i].pieceRect, Color.White);
+                if (player1[i].type == Type.Queen)
+                    _spriteBatch.Draw(W_Queen, player1[i].pieceRect, Color.White);
+                if (player1[i].type == Type.King)
+                    _spriteBatch.Draw(W_King, player1[i].pieceRect, Color.White);
+                if (player1[i].type == Type.Bishop)
+                    _spriteBatch.Draw(W_Bishop, player1[i].pieceRect, Color.White);
+                if (player1[i].type == Type.Knight)
+                    _spriteBatch.Draw(W_Knight, player1[i].pieceRect, Color.White);
+
+            }
+        }
+
+        public void CheckValidMoves(bool debugMode)
+        {
+            if (player1[selectedPiece].type == Type.Pawn)
+            {
+                if (player1[selectedPiece].hasBeenMoved == false)
+                {
+                    validMovesY.Add(player1[selectedPiece].piecePosY - 1);
+                    validMovesX.Add(player1[selectedPiece].piecePosX);
+                    validMovesY.Add(player1[selectedPiece].piecePosY - 2);
+                    validMovesX.Add(player1[selectedPiece].piecePosX);
+                    if (debugMode)
+                        Debug.WriteLine("Valid Moves Added");
+                }
+                if (player1[selectedPiece].hasBeenMoved == true)
+                {
+                    validMovesY.Add(player1[selectedPiece].piecePosY - 1);
+                    validMovesX.Add(player1[selectedPiece].piecePosX);
+                    if (debugMode)
+                        Debug.WriteLine("Valid Moves Added");
+                }
             }
         }
     }
