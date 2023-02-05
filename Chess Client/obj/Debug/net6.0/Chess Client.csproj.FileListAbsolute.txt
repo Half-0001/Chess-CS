@@ -36,3 +36,4 @@ C:\Users\nyleh\OneDrive\Documents\GitHub\Chess-CS\Chess Client\bin\Debug\net6.0\
 C:\Users\nyleh\OneDrive\Documents\GitHub\Chess-CS\Chess Client\bin\Debug\net6.0\Content\White\W_Pawn.xnb
 C:\Users\nyleh\OneDrive\Documents\GitHub\Chess-CS\Chess Client\bin\Debug\net6.0\Content\White\W_Queen.xnb
 C:\Users\nyleh\OneDrive\Documents\GitHub\Chess-CS\Chess Client\bin\Debug\net6.0\Content\White\W_Rook.xnb
+C:\Users\nyleh\OneDrive\Documents\GitHub\Chess-CS\Chess Client\bin\Debug\net6.0\Content\board coords.xnb

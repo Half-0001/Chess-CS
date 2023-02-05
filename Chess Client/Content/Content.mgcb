@@ -85,6 +85,18 @@
 /processorParam:TextureFormat=Color
 /build:Black/B_Rook.png
 
+#begin board coords.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:board coords.png
+
 #begin board.png
 /importer:TextureImporter
 /processor:TextureProcessor

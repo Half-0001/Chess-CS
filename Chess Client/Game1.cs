@@ -13,6 +13,7 @@ namespace Chess_Client
         Player1 player1 = new Player1();
 
         Texture2D board;
+        Texture2D boardCoords;
 
         bool debugMode;
         KeyboardState kStateOld;
@@ -38,6 +39,7 @@ namespace Chess_Client
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             board = Content.Load<Texture2D>("board");
+            boardCoords = Content.Load<Texture2D>("board coords");
             player1.LoadContent(Content, GraphicsDevice);
         }
 
@@ -68,6 +70,9 @@ namespace Chess_Client
             _spriteBatch.Draw(board, new Rectangle(0, 0, 800, 800), Color.White);
 
             player1.Draw(_spriteBatch);
+
+            if (debugMode)
+                _spriteBatch.Draw(boardCoords, new Rectangle(0, 0, 800, 800), Color.White);
 
             _spriteBatch.End();
             base.Draw(gameTime);
