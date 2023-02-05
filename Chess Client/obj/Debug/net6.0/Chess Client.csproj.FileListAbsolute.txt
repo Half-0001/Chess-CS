@@ -37,3 +37,42 @@ C:\Users\nyleh\OneDrive\Documents\GitHub\Chess-CS\Chess Client\bin\Debug\net6.0\
 C:\Users\nyleh\OneDrive\Documents\GitHub\Chess-CS\Chess Client\bin\Debug\net6.0\Content\White\W_Queen.xnb
 C:\Users\nyleh\OneDrive\Documents\GitHub\Chess-CS\Chess Client\bin\Debug\net6.0\Content\White\W_Rook.xnb
 C:\Users\nyleh\OneDrive\Documents\GitHub\Chess-CS\Chess Client\bin\Debug\net6.0\Content\board coords.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\Content\Black\B_Bishop.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\Content\Black\B_King.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\Content\Black\B_Knight.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\Content\Black\B_Pawn.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\Content\Black\B_Queen.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\Content\Black\B_Rook.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\Content\board coords.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\Content\board.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\Content\White\W_Bishop.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\Content\White\W_King.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\Content\White\W_Knight.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\Content\White\W_Pawn.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\Content\White\W_Queen.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\Content\White\W_Rook.xnb
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\Chess Client.exe
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\Chess Client.deps.json
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\Chess Client.runtimeconfig.json
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\Chess Client.dll
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\Chess Client.pdb
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\MonoGame.Framework.dll
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\runtimes\linux-x64\native\libSDL2-2.0.so.0
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\runtimes\linux-x64\native\libopenal.so.1
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\runtimes\osx\native\libSDL2.dylib
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\runtimes\osx\native\libopenal.1.dylib
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\runtimes\win-x64\native\SDL2.dll
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\runtimes\win-x64\native\soft_oal.dll
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\runtimes\win-x86\native\SDL2.dll
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\bin\Debug\net6.0\runtimes\win-x86\native\soft_oal.dll
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\obj\Debug\net6.0\Chess Client.csproj.AssemblyReference.cache
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\obj\Debug\net6.0\Chess Client.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\obj\Debug\net6.0\Chess Client.AssemblyInfoInputs.cache
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\obj\Debug\net6.0\Chess Client.AssemblyInfo.cs
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\obj\Debug\net6.0\Chess Client.csproj.CoreCompileInputs.cache
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\obj\Debug\net6.0\Chess Client.csproj.CopyComplete
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\obj\Debug\net6.0\Chess Client.dll
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\obj\Debug\net6.0\refint\Chess Client.dll
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\obj\Debug\net6.0\Chess Client.pdb
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\obj\Debug\net6.0\Chess Client.genruntimeconfig.cache
+C:\Users\nyleh\Documents\GitHub\repos\Chess-CS\Chess Client\obj\Debug\net6.0\ref\Chess Client.dll

@@ -56,6 +56,8 @@ namespace Chess_Client
         MouseState mState;
         MouseState mStateOld;
 
+        int mouseBoardSquareX = 1;
+        int mouseBoardSquareY = 1;  
         int selectedPiece = 100;
         bool hasBeenMoved;
         int piecePosX;
@@ -106,7 +108,7 @@ namespace Chess_Client
             }
             for (int i = 0; i < 8; i += 7)
             {
-                player1.Add(new Player1(3, i, Type.Rook));
+                player1.Add(new Player1(7, i, Type.Rook));
             }
             for (int i = 1; i < 7; i += 5)
             {
@@ -162,6 +164,35 @@ namespace Chess_Client
                         }
                     }
                 }
+                for (int i = 0; i < validMovesX.Count; i++)
+                {
+                    if (validMovesX[i] == mouseBoardSquareX && validMovesY[i] == mouseBoardSquareY)
+                    {
+                        Debug.WriteLine("Moving");
+                        player1[selectedPiece].position.X = board[validMovesY[i], validMovesX[i]].X;
+                        player1[selectedPiece].position.Y = board[validMovesY[i], validMovesX[i]].Y;
+                        player1[selectedPiece].piecePosX = validMovesX[i];
+                        player1[selectedPiece].piecePosY = validMovesY[i];
+                        player1[selectedPiece].hasBeenMoved = true;
+                        validMovesX.Clear();
+                        validMovesY.Clear();
+                        CheckValidMoves(debugMode);
+                    }
+                }
+            }
+            float distanceOld = Vector2.Distance(board[0, 0], new Vector2(mState.Position.X, mState.Position.Y));
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    float distance = Vector2.Distance(new Vector2(board[i, j].X + 35, board[i, j].Y + 35), new Vector2(mState.Position.X, mState.Position.Y));
+                    if (distance < distanceOld)
+                    {
+                        distanceOld = distance;
+                        mouseBoardSquareX = j;
+                        mouseBoardSquareY = i;
+                    }
+                }
             }
 
             mStateOld = mState;
@@ -170,6 +201,8 @@ namespace Chess_Client
         public void Draw(SpriteBatch _spriteBatch)
         {
             //_spriteBatch.Draw(_texture, mousePos, Color.Black);
+            //_spriteBatch.Draw(_texture, new Rectangle((int)board[0, mouseBoardSquareX].X, (int)board[mouseBoardSquareY, 0].Y, 80, 80), Color.LightCoral);
+
             for (int i = 0; i < player1.Count; i++) //draw pieces by type
             {
                 if (rectColours[i] != Color.Black)
@@ -269,7 +302,7 @@ namespace Chess_Client
                 validMovesY.Add(player1[selectedPiece].piecePosY + 0);
             }
 
-            if (player1[selectedPiece].type == Type.Rook)
+            if (player1[selectedPiece].type == Type.Rook || player1[selectedPiece].type == Type.Queen)
             {
                 
                 for (int i = 0; i < 8; i++)
@@ -325,30 +358,89 @@ namespace Chess_Client
 
             }
 
+            if (player1[selectedPiece].type == Type.Bishop || player1[selectedPiece].type == Type.Queen)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    if (!allPiecePositions.Contains((player1[selectedPiece].piecePosX + 1 + i) + "," + (player1[selectedPiece].piecePosY + 1 + i)))
+                    {
+                        validMovesX.Add(player1[selectedPiece].piecePosX + 1 + i);
+                        validMovesY.Add(player1[selectedPiece].piecePosY + 1 + i);
+                    }
+                    else
+                        break;
+                }
+                int xd = 0;
+                for (int i = 8; i > 0; i--)
+                {
+                    xd++;
+                    if (!allPiecePositions.Contains((player1[selectedPiece].piecePosX + xd) + "," + (player1[selectedPiece].piecePosY - xd)))
+                    {
+                        validMovesX.Add(player1[selectedPiece].piecePosX + xd);
+                        validMovesY.Add(player1[selectedPiece].piecePosY - xd);
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+                }
+                for (int i = 0; i < 8; i++)
+                {
+                    if (!allPiecePositions.Contains((player1[selectedPiece].piecePosX - 1 - i) + "," + (player1[selectedPiece].piecePosY - 1 - i)))
+                    {
+                        validMovesX.Add(player1[selectedPiece].piecePosX - 1 - i);
+                        validMovesY.Add(player1[selectedPiece].piecePosY - 1 - i);
+                    }
+                    else
+                        break;
+                }
+                xd = 0;
+                for (int i = 8; i > 0; i--)
+                {
+                    xd++;
+                    if (!allPiecePositions.Contains((player1[selectedPiece].piecePosX - xd) + "," + (player1[selectedPiece].piecePosY + xd)))
+                    {
+                        validMovesX.Add(player1[selectedPiece].piecePosX - xd);
+                        validMovesY.Add(player1[selectedPiece].piecePosY + xd);
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+                }
+            }
+
             int k = 0;
             while (k < validMovesX.Count)  //remove moves that are outside of the board and on top of other pieces
             { //  - use while loop to ensure no pieces are missed
-
+                if (validMovesY[k] < 0 || validMovesY[k] > 7)
+                {
+                    validMovesX.RemoveAt(k);
+                    validMovesY.RemoveAt(k);
+                    k = 0;
+                    continue;
+                }
                 if (validMovesX[k] < 0 || validMovesX[k] > 7)
                 {
                     validMovesX.RemoveAt(k);
                     validMovesY.RemoveAt(k);
                     k = 0;
-                }
-                if (validMovesY[k] > 7 || validMovesY[k] < 0)
-                {
-                    validMovesX.RemoveAt(k);
-                    validMovesY.RemoveAt(k);
-                    k = 0;
+                    continue;
                 }
                 if (allPiecePositions.Contains(validMovesX[k] + "," + validMovesY[k]))
                 {
                     validMovesX.RemoveAt(k);
                     validMovesY.RemoveAt(k);
                     k = 0;
+                    continue;
                 }
                 else
+                {
                     k++;
+                }
+
             }
 
             if (debugMode)
