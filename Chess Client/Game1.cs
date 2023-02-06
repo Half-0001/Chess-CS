@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Chess_Client
@@ -20,7 +21,9 @@ namespace Chess_Client
         bool debugMode;
         KeyboardState kStateOld;
 
+
         int playerTurn = 1;
+        int playerTurnOld;
 
         public Game1()
         {
@@ -63,9 +66,17 @@ namespace Chess_Client
                 playerTurn = player1.Update(debugMode);
             if (playerTurn == 2)
                 playerTurn = player2.Update(debugMode);
-            
 
+            if (playerTurn == 1 && playerTurnOld == 2)
+            {
+                player1.CheckForCaptures(player2.lastPiecePosX, player2.lastPiecePosY);
+            }
+            if (playerTurn == 2 && playerTurnOld == 1)
+            {
+                player2.CheckForCaptures(player1.lastPiecePosX, player1.lastPiecePosY);
+            }
 
+            playerTurnOld = playerTurn;
             kStateOld = Keyboard.GetState();
             base.Update(gameTime);
         }
@@ -79,6 +90,8 @@ namespace Chess_Client
 
             player1.Draw(_spriteBatch, playerTurn);
             player2.Draw(_spriteBatch, playerTurn);
+            player1.DrawValidMoves(_spriteBatch, playerTurn);
+            player2.DrawValidMoves(_spriteBatch, playerTurn);
 
             if (debugMode)
                 _spriteBatch.Draw(boardCoords, new Rectangle(0, 0, 800, 800), Color.White);

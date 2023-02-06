@@ -71,6 +71,9 @@ namespace Chess_Client
             int piecePosX;
             int piecePosY;
 
+            public int lastPiecePosX;
+            public int lastPiecePosY;
+
             List<int> validMovesX = new List<int>();
             List<int> validMovesY = new List<int>();
 
@@ -174,9 +177,8 @@ namespace Chess_Client
                     }
                     for (int i = 0; i < validMovesX.Count; i++)
                     {
-                        if (validMovesX[i] == mouseBoardSquareX && validMovesY[i] == mouseBoardSquareY)
+                        if (validMovesX[i] == mouseBoardSquareX && validMovesY[i] == mouseBoardSquareY && selectedPiece != 100)
                         {
-                            Debug.WriteLine("Moving");
                             player2[selectedPiece].position.X = board[validMovesY[i], validMovesX[i]].X;
                             player2[selectedPiece].position.Y = board[validMovesY[i], validMovesX[i]].Y;
                             player2[selectedPiece].piecePosX = validMovesX[i];
@@ -190,6 +192,8 @@ namespace Chess_Client
                                 player2[j].pieceRect.X = (int)player2[j].position.X;
                                 player2[j].pieceRect.Y = (int)player2[j].position.Y;
                             }
+                            lastPiecePosX = player2[selectedPiece].piecePosX;
+                            lastPiecePosY = player2[selectedPiece].piecePosY;
                             return 1;
                         }
                     }
@@ -239,7 +243,11 @@ namespace Chess_Client
                         _spriteBatch.Draw(B_Knight, player2[i].pieceRect, Color.White);
 
                 }
-                if (playerTurn == 2)
+            }
+
+            public void DrawValidMoves(SpriteBatch _spriteBatch, int playerTurn)
+            {
+                if (playerTurn == 2 && selectedPiece != 100)
                 {
                     for (int i = 0; i < validMovesX.Count; i++)
                     {
@@ -465,6 +473,21 @@ namespace Chess_Client
 
                 if (debugMode)
                     Debug.WriteLine("Valid Moves Added");
+            }
+
+            public void CheckForCaptures(int lastPiecePosX, int lastPiecePosY) //runs after player1 has moved
+            {
+                if (selectedPiece != 100)
+                    rectColours[selectedPiece] = Color.Black;
+                selectedPiece = 100;
+
+                for (int i = 0; i < player2.Count; i++)
+                {
+                    if (player2[i].piecePosX == lastPiecePosX && player2[i].piecePosY == lastPiecePosY)
+                    {
+                        player2.RemoveAt(i);
+                    }
+                }
             }
         }
     }
