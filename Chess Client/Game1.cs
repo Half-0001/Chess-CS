@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Chess_Client.Chess_Client;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
@@ -11,12 +12,15 @@ namespace Chess_Client
         private SpriteBatch _spriteBatch;
 
         Player1 player1 = new Player1();
+        Player2 player2 = new Player2();
 
         Texture2D board;
         Texture2D boardCoords;
 
         bool debugMode;
         KeyboardState kStateOld;
+
+        int playerTurn = 1;
 
         public Game1()
         {
@@ -41,6 +45,7 @@ namespace Chess_Client
             board = Content.Load<Texture2D>("board");
             boardCoords = Content.Load<Texture2D>("board coords");
             player1.LoadContent(Content, GraphicsDevice);
+            player2.LoadContent(Content, GraphicsDevice);
         }
 
         protected override void Update(GameTime gameTime)
@@ -54,8 +59,11 @@ namespace Chess_Client
                 Debug.WriteLine("Debug Mode: " + debugMode);
             }
 
-
-            player1.Update(debugMode);
+            if (playerTurn == 1)
+                playerTurn = player1.Update(debugMode);
+            if (playerTurn == 2)
+                playerTurn = player2.Update(debugMode);
+            
 
 
             kStateOld = Keyboard.GetState();
@@ -69,7 +77,8 @@ namespace Chess_Client
 
             _spriteBatch.Draw(board, new Rectangle(0, 0, 800, 800), Color.White);
 
-            player1.Draw(_spriteBatch);
+            player1.Draw(_spriteBatch, playerTurn);
+            player2.Draw(_spriteBatch, playerTurn);
 
             if (debugMode)
                 _spriteBatch.Draw(boardCoords, new Rectangle(0, 0, 800, 800), Color.White);

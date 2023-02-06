@@ -33,7 +33,7 @@ namespace Chess_Client
 
         List<Player1> player1 = new List<Player1>();
         Vector2[,] board = new Vector2[8, 8]{ //board co-ords
-                                {new Vector2(5, 5), new Vector2(105, 5), new Vector2(205, 5), new Vector2(320, 5), new Vector2(420, 5), new Vector2(520, 5), new Vector2(620, 5), new Vector2(720, 5)},
+                                {new Vector2(5, 5), new Vector2(105, 5), new Vector2(205, 5), new Vector2(305, 5), new Vector2(405, 5), new Vector2(505, 5), new Vector2(605, 5), new Vector2(705, 5)},
                                 {new Vector2(5, 105), new Vector2(105, 105), new Vector2(205, 105), new Vector2(305, 105), new Vector2(405, 105), new Vector2(505, 105), new Vector2(605, 105), new Vector2(705, 105)},
                                 {new Vector2(5, 205), new Vector2(105, 205), new Vector2(205, 205), new Vector2(305, 205), new Vector2(405, 205), new Vector2(505, 205), new Vector2(605, 205), new Vector2(705, 205)},
                                 {new Vector2(5, 305), new Vector2(105, 305), new Vector2(205, 305), new Vector2(305, 305), new Vector2(405, 305), new Vector2(505, 305), new Vector2(605, 305), new Vector2(705, 305)},
@@ -126,7 +126,7 @@ namespace Chess_Client
             }
         }
 
-        public void Update(bool debugMode)
+        public int Update(bool debugMode)
         {
             mState = Mouse.GetState();
             mousePos.X = (int)mState.X;
@@ -137,7 +137,7 @@ namespace Chess_Client
                 player1[i].pieceRect.X = (int)player1[i].position.X;
                 player1[i].pieceRect.Y = (int)player1[i].position.Y;
             }
-            
+
             if (mState.LeftButton == ButtonState.Pressed && mStateOld.LeftButton == ButtonState.Released)
             {
                 for (int i = 0; i < player1.Count; i++)
@@ -167,8 +167,7 @@ namespace Chess_Client
                 for (int i = 0; i < validMovesX.Count; i++)
                 {
                     if (validMovesX[i] == mouseBoardSquareX && validMovesY[i] == mouseBoardSquareY)
-                    {
-                        Debug.WriteLine("Moving");
+                    { 
                         player1[selectedPiece].position.X = board[validMovesY[i], validMovesX[i]].X;
                         player1[selectedPiece].position.Y = board[validMovesY[i], validMovesX[i]].Y;
                         player1[selectedPiece].piecePosX = validMovesX[i];
@@ -177,6 +176,12 @@ namespace Chess_Client
                         validMovesX.Clear();
                         validMovesY.Clear();
                         CheckValidMoves(debugMode);
+                        for (int j = 0; j < player1.Count; j++) //update every pieces rect to their position
+                        {
+                            player1[j].pieceRect.X = (int)player1[j].position.X;
+                            player1[j].pieceRect.Y = (int)player1[j].position.Y;
+                        }
+                        return 2;
                     }
                 }
             }
@@ -196,17 +201,22 @@ namespace Chess_Client
             }
 
             mStateOld = mState;
+            return 1;
         }
 
-        public void Draw(SpriteBatch _spriteBatch)
+        public void Draw(SpriteBatch _spriteBatch, int playerTurn)
         {
             //_spriteBatch.Draw(_texture, mousePos, Color.Black);
             //_spriteBatch.Draw(_texture, new Rectangle((int)board[0, mouseBoardSquareX].X, (int)board[mouseBoardSquareY, 0].Y, 80, 80), Color.LightCoral);
 
+            
             for (int i = 0; i < player1.Count; i++) //draw pieces by type
             {
-                if (rectColours[i] != Color.Black)
-                    _spriteBatch.Draw(_texture, player1[i].pieceRect, rectColours[i]);
+                if (playerTurn == 1)
+                {
+                    if (rectColours[i] != Color.Black)
+                        _spriteBatch.Draw(_texture, player1[i].pieceRect, rectColours[i]);
+                }
                 if (player1[i].type == Type.Pawn)
                     _spriteBatch.Draw(W_Pawn, player1[i].pieceRect, Color.White);
                 if (player1[i].type == Type.Rook)
@@ -221,10 +231,12 @@ namespace Chess_Client
                     _spriteBatch.Draw(W_Knight, player1[i].pieceRect, Color.White);
 
             }
-
-            for (int i = 0; i < validMovesX.Count; i++)
+            if (playerTurn == 1)
             {
-                _spriteBatch.Draw(_texture, new Rectangle((int)board[0, validMovesX[i]].X + 12, (int)board[validMovesY[i], 0].Y + 30, 40, 40), Color.Gray);
+                for (int i = 0; i < validMovesX.Count; i++)
+                {
+                    _spriteBatch.Draw(_texture, new Rectangle((int)board[0, validMovesX[i]].X + 25, (int)board[validMovesY[i], 0].Y + 30, 40, 40), Color.Gray);
+                }
             }
         }
 
