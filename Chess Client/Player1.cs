@@ -67,6 +67,7 @@ namespace Chess_Client
 
         List<int> validMovesX = new List<int>();
         List<int> validMovesY = new List<int>();
+        public List<string> allPiecePositions = new List<string>();
 
         List<Color> rectColours = new List<Color>();
         Color SemiTransparent = new Color(225, 232, 149, 255);
@@ -128,7 +129,7 @@ namespace Chess_Client
             }
         }
 
-        public int Update(bool debugMode)
+        public int Update(bool debugMode, List<string> p2AllPiecePositions)
         {
             mState = Mouse.GetState();
             mousePos.X = (int)mState.X;
@@ -154,7 +155,7 @@ namespace Chess_Client
                                 rectColours[selectedPiece] = Color.Black;
                             selectedPiece = i;
                             rectColours[i] = SemiTransparent;
-                            CheckValidMoves(debugMode);
+                            CheckValidMoves(debugMode, p2AllPiecePositions);
                             if (debugMode)
                             {
                                 for (int j = 0; j < validMovesX.Count; j++)
@@ -177,7 +178,6 @@ namespace Chess_Client
                         player1[selectedPiece].hasBeenMoved = true;
                         validMovesX.Clear();
                         validMovesY.Clear();
-                        CheckValidMoves(debugMode);
                         for (int j = 0; j < player1.Count; j++) //update every pieces rect to their position
                         {
                             player1[j].pieceRect.X = (int)player1[j].position.X;
@@ -185,6 +185,8 @@ namespace Chess_Client
                         }
                         lastPiecePosX = player1[selectedPiece].piecePosX;
                         lastPiecePosY = player1[selectedPiece].piecePosY;
+                        CheckValidMoves(debugMode, p2AllPiecePositions);
+                        Debug.WriteLine("moved p1");
                         return 2;
                     }
                 }
@@ -203,7 +205,6 @@ namespace Chess_Client
                     }
                 }
             }
-
             mStateOld = mState;
             return 1;
         }
@@ -251,24 +252,34 @@ namespace Chess_Client
 
 
 
-        public void CheckValidMoves(bool debugMode)
+        public void CheckValidMoves(bool debugMode, List<string> p2AllPiecePositions)
         {
-            List<string> allPiecePositions = new List<string>();
-            for (int i = 0; i < player1.Count; i++)
-            {
-                if (i != selectedPiece)
-                    allPiecePositions.Add(player1[i].piecePosX + "," + player1[i].piecePosY);
-            }
+            SetPiecePositions();
 
             if (player1[selectedPiece].type == Type.Pawn)
-            {
-                validMovesY.Add(player1[selectedPiece].piecePosY - 1);
-                validMovesX.Add(player1[selectedPiece].piecePosX);
+            { 
+                if (!p2AllPiecePositions.Contains(player1[selectedPiece].piecePosX + "," + (player1[selectedPiece].piecePosY - 1)))
+                {
+                    validMovesY.Add(player1[selectedPiece].piecePosY - 1);
+                    validMovesX.Add(player1[selectedPiece].piecePosX);
+                }
 
-                if (player1[selectedPiece].hasBeenMoved == false)
+                if (player1[selectedPiece].hasBeenMoved == false && !p2AllPiecePositions.Contains(player1[selectedPiece].piecePosX + "," + (player1[selectedPiece].piecePosY - 2)))
                 {
                     validMovesY.Add(player1[selectedPiece].piecePosY - 2);
                     validMovesX.Add(player1[selectedPiece].piecePosX);
+                }
+
+                if (p2AllPiecePositions.Contains((player1[selectedPiece].piecePosX + 1) + "," + (player1[selectedPiece].piecePosY - 1)))
+                {
+                    validMovesY.Add(player1[selectedPiece].piecePosY - 1);
+                    validMovesX.Add(player1[selectedPiece].piecePosX + 1);
+                }
+                
+                if (p2AllPiecePositions.Contains((player1[selectedPiece].piecePosX - 1) + "," + (player1[selectedPiece].piecePosY - 1)))
+                {
+                    validMovesY.Add(player1[selectedPiece].piecePosY - 1);
+                    validMovesX.Add(player1[selectedPiece].piecePosX - 1);
                 }
             }
             if (player1[selectedPiece].type == Type.Knight)
@@ -337,6 +348,12 @@ namespace Chess_Client
                     }
                     else
                         break;
+                    if (p2AllPiecePositions.Contains(player1[selectedPiece].piecePosX + "," + (player1[selectedPiece].piecePosY + 1 + i)))
+                    {
+                        validMovesX.Add(player1[selectedPiece].piecePosX);
+                        validMovesY.Add(player1[selectedPiece].piecePosY + 1 + i);
+                        break;
+                    }
                 }
                 int xd = 0;
                 for (int i = 8; i > 0; i--)
@@ -351,7 +368,12 @@ namespace Chess_Client
                     {
                         break;
                     }
-
+                    if (p2AllPiecePositions.Contains(player1[selectedPiece].piecePosX + "," + (player1[selectedPiece].piecePosY - xd)))
+                    {
+                        validMovesX.Add(player1[selectedPiece].piecePosX);
+                        validMovesY.Add(player1[selectedPiece].piecePosY - xd);
+                        break;
+                    }
                 }
                 for (int i = 0; i < 8; i++)
                 {
@@ -362,6 +384,12 @@ namespace Chess_Client
                     }
                     else
                         break;
+                    if (p2AllPiecePositions.Contains((player1[selectedPiece].piecePosX + 1 + i) + "," + player1[selectedPiece].piecePosY))
+                    {
+                        validMovesX.Add(player1[selectedPiece].piecePosX + 1 + i);
+                        validMovesY.Add(player1[selectedPiece].piecePosY);
+                        break;
+                    }
                 }
                 xd = 0;
                 for (int i = 8; i > 0; i--)
@@ -374,6 +402,12 @@ namespace Chess_Client
                     }
                     else
                     {
+                        break;
+                    }
+                    if (p2AllPiecePositions.Contains((player1[selectedPiece].piecePosX - xd) + "," + player1[selectedPiece].piecePosY))
+                    {
+                        validMovesX.Add(player1[selectedPiece].piecePosX - xd);
+                        validMovesY.Add(player1[selectedPiece].piecePosY);
                         break;
                     }
 
@@ -392,6 +426,12 @@ namespace Chess_Client
                     }
                     else
                         break;
+                    if (p2AllPiecePositions.Contains((player1[selectedPiece].piecePosX + 1 + i) + "," + (player1[selectedPiece].piecePosY + 1 + i)))
+                    {
+                        validMovesX.Add(player1[selectedPiece].piecePosX + 1 + i);
+                        validMovesY.Add(player1[selectedPiece].piecePosY + 1 + i);
+                        break;
+                    }
                 }
                 int xd = 0;
                 for (int i = 8; i > 0; i--)
@@ -406,6 +446,12 @@ namespace Chess_Client
                     {
                         break;
                     }
+                    if (p2AllPiecePositions.Contains((player1[selectedPiece].piecePosX + xd) + "," + (player1[selectedPiece].piecePosY - xd)))
+                    {
+                        validMovesX.Add(player1[selectedPiece].piecePosX + xd);
+                        validMovesY.Add(player1[selectedPiece].piecePosY - xd);
+                        break;
+                    }
 
                 }
                 for (int i = 0; i < 8; i++)
@@ -417,6 +463,12 @@ namespace Chess_Client
                     }
                     else
                         break;
+                    if (p2AllPiecePositions.Contains((player1[selectedPiece].piecePosX - 1 - i) + "," + (player1[selectedPiece].piecePosY - 1 - i)))
+                    {
+                        validMovesX.Add(player1[selectedPiece].piecePosX - 1 - i);
+                        validMovesY.Add(player1[selectedPiece].piecePosY - 1 - i);
+                        break;
+                    }
                 }
                 xd = 0;
                 for (int i = 8; i > 0; i--)
@@ -429,6 +481,12 @@ namespace Chess_Client
                     }
                     else
                     {
+                        break;
+                    }
+                    if (p2AllPiecePositions.Contains((player1[selectedPiece].piecePosX - xd) + "," + (player1[selectedPiece].piecePosY + xd)))
+                    {
+                        validMovesX.Add(player1[selectedPiece].piecePosX - xd);
+                        validMovesY.Add(player1[selectedPiece].piecePosY + xd);
                         break;
                     }
 
@@ -484,6 +542,17 @@ namespace Chess_Client
                     player1.RemoveAt(i);
                 }
             }
+        }
+
+        public void SetPiecePositions()
+        {
+            allPiecePositions = new List<string>();
+            for (int i = 0; i < player1.Count; i++)
+            {
+                //if (i != selectedPiece)
+                allPiecePositions.Add(player1[i].piecePosX + "," + player1[i].piecePosY);
+            }
+            Debug.WriteLine("set piece positions p1");
         }
     }
 

@@ -63,18 +63,22 @@ namespace Chess_Client
             }
 
             if (playerTurn == 1)
-                playerTurn = player1.Update(debugMode);
+                playerTurn = player1.Update(debugMode, player2.allPiecePositions);
             if (playerTurn == 2)
-                playerTurn = player2.Update(debugMode);
+                playerTurn = player2.Update(debugMode, player1.allPiecePositions);
 
             if (playerTurn == 1 && playerTurnOld == 2)
             {
+                player2.SetPiecePositions();
                 player1.CheckForCaptures(player2.lastPiecePosX, player2.lastPiecePosY);
             }
             if (playerTurn == 2 && playerTurnOld == 1)
             {
+                player1.SetPiecePositions();
                 player2.CheckForCaptures(player1.lastPiecePosX, player1.lastPiecePosY);
             }
+            
+            
 
             playerTurnOld = playerTurn;
             kStateOld = Keyboard.GetState();
